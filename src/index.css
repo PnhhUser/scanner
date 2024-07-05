@@ -1,0 +1,22 @@
+.btn {
+    border: 1px solid;
+    padding: 10px 20px;
+    max-width: 150px;
+    text-align: center;
+    cursor: pointer;
+    border-radius: 4px;
+    margin: 10px 0;
+}
+
+.btn:active {
+    transform: scale(.9);
+    transition: transform .1s linear;
+}
+
+#reader {
+    margin-top: 10px;
+    max-width: 600px;
+    width: 400px;
+    height: auto;
+    border-radius: 4px;
+}
