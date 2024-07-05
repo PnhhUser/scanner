@@ -7,9 +7,11 @@ let scanner;
 
 const App = () => {
   const [qrcode, setQrcode] = useState("");
+  const [isScan, setIsScan] = useState(true);
 
   useEffect(() => {
     scanner = new Html5Qrcode(elementId);
+
   }, [])
 
   const qrCodeSuccessCallback = (decodedText, decodedResult) => {
@@ -43,14 +45,45 @@ const App = () => {
     setQrcode("");
   }
 
+  const handleImg = async (e) => {
+
+    if (e.target.files.length == 0) {
+      return;
+    }
+
+    const imageFile = e.target.files[0];
+
+    scanner.scanFile(imageFile, true)
+      .then((decodedText) => {
+
+        setQrcode(decodedText);
+      })
+      .catch(err => {
+        alert(`Error scanning file. Reason: ${err}`);
+        scanner.clear();
+        return err;
+      })
+
+
+
+  }
+
   return (
     <div>
-      <div className="btn" onClick={handleStartScan}> Scanner QR code </div>
-      <div className="btn" onClick={handleStopScan}>Stop</div>
+      <div className="btn" onClick={() => setIsScan(true)}>camera</div>
+      <div className="btn" onClick={() => setIsScan(false)}>image</div>
+      {
+        isScan ? <div>
+          <div className="btn" onClick={handleStartScan}> Scanner QR code </div>
+          <div className="btn" onClick={handleStopScan}>Stop</div>
+
+        </div> : <input type="file" id="qr-input-file" accept="image/*" onChange={handleImg} />
+      }
+
       <div>
         <div id={elementId}></div>
         <div>
-          <p>Result: {qrcode}</p>
+          <p>QR Code: {qrcode}</p>
         </div>
       </div>
     </div>
